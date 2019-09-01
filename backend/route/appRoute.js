@@ -3,6 +3,7 @@ const router = express.Router();
 
 var nameList = require("../controller/appController");
 
+// router for various input
 router.route("/names").get(nameList.list_all_names);
 
 router.route("/names/:id").get(nameList.read_single_name);
