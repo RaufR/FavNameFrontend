@@ -33,6 +33,20 @@ Name.getNameById = function getTaskById(id, result) {
   });
 };
 
+Name.getDetailByName = function getDetailByName(name, result) {
+  sql.query("Select * from FavNameList where name= ?", name, function(
+    err,
+    res
+  ) {
+    if (err) {
+      console.log("error: ", err);
+      result(err, null);
+    } else {
+      result(null, res);
+    }
+  });
+};
+
 Name.getNameByYear = function getNameByYear(year, result) {
   sql.query("Select * from FavNameList where YearOfName= ?", year, function(
     err,
