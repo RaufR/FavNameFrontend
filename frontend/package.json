@@ -1,6 +1,6 @@
 {
-  "name": "ps-redux",
-  "description": "React and Redux Pluralsight course by Cory House",
+  "name": "FavName",
+  "description": "Name Dataset fan project 2019",
   "scripts": {
     "start": "webpack-dev-server --config webpack.config.dev.js --port 3000"
   },
