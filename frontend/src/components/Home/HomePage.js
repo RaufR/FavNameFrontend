@@ -1,93 +1,72 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/styles";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
-import { FormControl } from "@material-ui/core";
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 
-const styles = theme => ({
+const useStyles = makeStyles(theme => ({
   formControl: {
+    marginTop: 100,
+    margin: theme.spacing(1),
     width: 200
   },
-  selectEmpty: {}
-});
+  selectEmpty: {
+    marginTop: theme.spacing(2)
+  }
+}));
 
-class HomePage extends React.Component {
-  constructor(props) {
-    super(props);
-    this.myRef = React.createRef();
-    this.state = {
-      names: [],
-      clickedName: ""
-    };
-    this.handleChange = this.handleChange.bind(this);
+export default function HomePage() {
+  const classes = useStyles();
+  var [values, setValues] = React.useState({
+    years: "",
+    clickedYear: ""
+  });
+
+  const inputLabel = React.useRef(null);
+  const [labelWidth, setLabelWidth] = React.useState(0);
+  React.useEffect(() => {
+    setLabelWidth(inputLabel.current.offsetWidth);
+  }, []);
+
+  function handleChange(event) {
+    setValues(oldValues => ({
+      ...oldValues,
+      [event.target.name]: event.target.value,
+      clickedYear: [event.target.name]
+    })),
+      function() {
+        console.log("clecked", this.state.clickedYear);
+      };
   }
 
-  handleChange(event) {
-    this.setState({
-      clickedName: event.target.value
-    });
-
-    console.log("clicked", this.state.clickedName);
-  }
-
-  componentDidMount = () => {
-    this.setState({
-      names: [
-        {
-          id: 1,
-          name: "Afghanistan"
-        },
-        {
-          id: 2,
-          name: "Åland Islands"
-        },
-        {
-          id: 3,
-          name: "Albania"
-        }
-      ]
-    });
-  };
-
-  render = () => {
-    const { classes } = this.props;
-    const { names } = this.state;
-
-    const { clickedName } = this.state.clickedName;
-    let nameList =
-      names.length > 0 &&
-      names.map((item, i) => {
-        return (
-          <MenuItem key={i} value={item.name}>
-            {item.name}
+  return (
+    <form className={classes.root} autoComplete="off">
+      <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel ref={inputLabel} htmlFor="outlined-years-simple">
+          Select Year
+        </InputLabel>
+        <Select
+          value={values.years}
+          onChange={handleChange}
+          labelWidth={labelWidth}
+          inputProps={{
+            name: "years",
+            id: "outlined-years-simple"
+          }}
+        >
+          <MenuItem value="">
+            <em>None</em>
           </MenuItem>
-        );
-      });
-
-    return (
-      <div>
-        <form className={classes.root} autoComplete="off">
-          <FormControl className={classes.formControl}>
-            <InputLabel htmlFor={clickedName}>Select Country</InputLabel>
-            <Select value={this.state.name} onChange={this.handleChange}>
-              {nameList}
-            </Select>
-          </FormControl>
-        </form>
-      </div>
-    );
-  };
+          <MenuItem value={2016}>2016</MenuItem>
+          <MenuItem value={2015}>2015</MenuItem>
+          <MenuItem value={2014}>2014</MenuItem>
+          <MenuItem value={2013}>2013</MenuItem>
+          <MenuItem value={2012}>2012</MenuItem>
+          <MenuItem value={2011}>2011</MenuItem>
+        </Select>
+      </FormControl>
+    </form>
+  );
 }
-
-HomePage.propTypes = {
-  classes: PropTypes.object.isRequired
-};
-
-export default withStyles(styles)(HomePage);
-
-// todo:
-// keep state update clickeName
-// pass clickedName data to placeholder
-// use this as an single dropdown component
