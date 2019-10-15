@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "dev": "nodemon app.js",
     "start": "if [[ $NODE_ENV == 'production' ]]; then node app.js; else nodemon app.js; fi "
   },
   "dependencies": {
